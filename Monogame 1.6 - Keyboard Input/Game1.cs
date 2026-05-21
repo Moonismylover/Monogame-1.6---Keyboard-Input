@@ -98,6 +98,18 @@ namespace Monogame_1._6___Keyboard_Input
                 pacTexture = pacSleep;
             }
 
+            if (pacLocation.X < 0)
+                pacLocation.X = 0;
+
+            if (pacLocation.Y < 0)
+                pacLocation.Y = 0;
+
+            if (pacLocation.Right > window.Width)
+                pacLocation.X = window.Width - pacLocation.Width;
+
+            if (pacLocation.Bottom > window.Height)
+                pacLocation.Y = window.Height - pacLocation.Height;
+
             base.Update(gameTime);
         }
 
