@@ -9,6 +9,16 @@ namespace Monogame_1._6___Keyboard_Input
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        Rectangle window;
+
+        Texture2D pacTexture;
+
+        Rectangle pacLocation;
+
+        Vector2 pacSpeed;
+
+        KeyboardState keyboardState;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -18,7 +28,13 @@ namespace Monogame_1._6___Keyboard_Input
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            window = new Rectangle(0, 0, 800, 600);
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
+            _graphics.ApplyChanges();
+
+            pacLocation = new Rectangle(10, 10, 75, 75);
+
 
             base.Initialize();
         }
@@ -27,7 +43,8 @@ namespace Monogame_1._6___Keyboard_Input
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            pacTexture = Content.Load<Texture2D>("PacRight");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -35,7 +52,9 @@ namespace Monogame_1._6___Keyboard_Input
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            keyboardState = Keyboard.GetState();
+
+            pacSpeed = new Vector2();
 
             base.Update(gameTime);
         }
