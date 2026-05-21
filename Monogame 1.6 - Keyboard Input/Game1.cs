@@ -11,7 +11,12 @@ namespace Monogame_1._6___Keyboard_Input
 
         Rectangle window;
 
-        Texture2D pacTexture;
+        Texture2D pacTexture; 
+        Texture2D pacRight;
+        Texture2D pacLeft;
+        Texture2D pacUp;
+        Texture2D pacDown;
+        Texture2D pacSleep;
 
         Rectangle pacLocation;
 
@@ -43,8 +48,13 @@ namespace Monogame_1._6___Keyboard_Input
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            pacTexture = Content.Load<Texture2D>("PacRight");
+            pacRight = Content.Load<Texture2D>("PacRight");
+            pacLeft = Content.Load<Texture2D>("pacLeft");
+            pacUp = Content.Load<Texture2D>("pacUp");
+            pacDown = Content.Load<Texture2D>("pacDown");
+            pacSleep = Content.Load<Texture2D>("pacSleep");
 
+            pacTexture = pacSleep;
         }
 
         protected override void Update(GameTime gameTime)
@@ -53,17 +63,51 @@ namespace Monogame_1._6___Keyboard_Input
                 Exit();
 
             keyboardState = Keyboard.GetState();
+            pacSpeed.X = 0;
+            pacSpeed.Y = 0;
 
-            pacSpeed = new Vector2();
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                pacSpeed.Y -= 2;
+                pacTexture = pacUp;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                pacSpeed.Y += 2;
+                pacTexture = pacDown;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                pacSpeed.X -= 2;
+                pacTexture = pacLeft;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                pacSpeed.X += 2;
+                pacTexture = pacRight;
+            }
+
+            pacLocation.X += (int)pacSpeed.X;
+            pacLocation.Y += (int)pacSpeed.Y;
+
+            if (!keyboardState.IsKeyDown(Keys.Up) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Down))
+            {
+                pacTexture = pacSleep;
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(pacTexture, pacLocation, Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
